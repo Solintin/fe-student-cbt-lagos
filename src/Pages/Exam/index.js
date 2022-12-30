@@ -7,21 +7,24 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   fetchQuestions,
   setCurrentQuestion,
+  setQuestionsAnsweredCorrectly,
   setTouchedQuestion,
 } from "../../Redux/Actions/ActionCreators";
+import { useTimer } from "../../Hooks/useTimer";
 function Exam() {
-//   const [questions, setQuestion] = useState(Questions);
+  //   const [questions, setQuestion] = useState(Questions);
   //   const [randomQuestions, setRandomQuestions] = useState([]);
   //   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  //   const [prevQuestion, setPrevQuestion] = useState(null);
-  //   const [nextQuestion, setNextQuestion] = useState(null);
+
+  const [minutes, seconds] = useTimer(180000);
+  //   console.log(minutes);
+
   const [loading, setLoading] = useState(true);
 
   const dispatch = useDispatch();
 
-  const { questionBank, currentQuestion, touchedQuestion } = useSelector(
-    (state) => state.examination
-  );
+  const { questionBank, currentQuestion, touchedQuestion, correctAnswers } =
+    useSelector((state) => state.examination);
   const generateRandomQuestion = (data) => {
     let arrayContainer = [];
     let questionContainer = [];
@@ -45,7 +48,6 @@ function Exam() {
   const updateCurrentQuestion = (index) => {
     dispatch(setCurrentQuestion(index));
   };
-  console.log(loading);
 
   const handleNextQuestion = () => {
     if (currentQuestion < questionBank.length - 1) {
@@ -63,7 +65,6 @@ function Exam() {
   };
   const handleTouchedQuestion = (question) => {
     const touchedQuestionCopy = touchedQuestion;
-    console.log(touchedQuestionCopy);
     if (touchedQuestionCopy.length > 0) {
       const isQuestionAnswered = isQuestionTouched(question);
       console.log(isQuestionAnswered);
@@ -74,17 +75,24 @@ function Exam() {
       dispatch(setTouchedQuestion([...touchedQuestionCopy, question]));
     }
   };
+
   const pickQuestion = (questionId) => {
     updateCurrentQuestion(questionId);
   };
   const handleAnswer = (question, answer) => {
     handleTouchedQuestion(question);
     handleNextQuestion();
+
+    const isExist = correctAnswers.find((item) => item.id === question.id);
+    if (answer === question.answer && !isExist) {
+      dispatch(setQuestionsAnsweredCorrectly([...correctAnswers, question]));
+    }
   };
 
   useEffect(() => {
-    generateRandomQuestion(Questions);
-    console.log(currentQuestion);
+    if (questionBank.length === 0) {
+      generateRandomQuestion(Questions);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
@@ -97,7 +105,7 @@ function Exam() {
           </div>
         </div>
 
-        {!loading && (
+        {questionBank.length > 0 && (
           <div className="grid grid-cols-12 gap-x-10">
             <div className="col-span-8" title="Question">
               <div>
@@ -124,7 +132,7 @@ function Exam() {
                     onClick={() => {
                       handleAnswer(
                         questionBank[currentQuestion],
-                        questionBank[currentQuestion]?.optionA
+                        questionBank[currentQuestion]?.optionB
                       );
                     }}
                     className="p-4 border hover:border-green-500 rounded text-primary-100"
@@ -135,7 +143,7 @@ function Exam() {
                     onClick={() => {
                       handleAnswer(
                         questionBank[currentQuestion],
-                        questionBank[currentQuestion]?.optionA
+                        questionBank[currentQuestion]?.optionC
                       );
                     }}
                     className="p-4 border hover:border-green-500 rounded text-primary-100"
@@ -146,7 +154,7 @@ function Exam() {
                     onClick={() => {
                       handleAnswer(
                         questionBank[currentQuestion],
-                        questionBank[currentQuestion]?.optionA
+                        questionBank[currentQuestion]?.optionD
                       );
                     }}
                     className="p-4 border hover:border-green-500 rounded text-primary-100"
@@ -172,7 +180,8 @@ function Exam() {
                   className={`py-2 px-4 rounded bg-info-600 text-white`}
                   title="next"
                 >
-                  59:02
+                  {minutes > 9 ? minutes : "0" + minutes} :{" "}
+                  {seconds > 9 ? seconds : "0" + seconds}
                 </button>
                 <button
                   disabled={currentQuestion === questionBank.length - 1}

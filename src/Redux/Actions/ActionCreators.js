@@ -80,6 +80,11 @@ const setTouchedQuestion = (data) => {
     dispatch({ type: "FETCH_TOUCHED_QUESTIONS", payload: data });
   };
 };
+const setQuestionsAnsweredCorrectly = (data) => {
+  return (dispatch) => {
+    dispatch({ type: "FETCH_CORRECT_ANSWERS", payload: data });
+  };
+};
 
 
 
@@ -89,6 +94,8 @@ export {
   loginSuccess,
   fetchQuestions,
   setCurrentQuestion,
-  setTouchedQuestion
+  setTouchedQuestion,
+  setQuestionsAnsweredCorrectly
+
 }
 

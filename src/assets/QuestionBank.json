@@ -30,7 +30,7 @@
     },
   
     {
-      "id": "4",
+      "id": 4,
       "question": "Which is the only mammal that can’t jump?",
       "optionA": "Dog",
       "optionB": "Elephant",

@@ -1,7 +1,8 @@
 const initailState = {
   questionBank: [],
   currentQuestion: 0,
-  touchedQuestion: []
+  touchedQuestion: [],
+  correctAnswers: [],
 };
 const examination = (state = initailState, action) => {
   switch (action.type) {
@@ -15,10 +16,15 @@ const examination = (state = initailState, action) => {
         ...state,
         currentQuestion: action.payload,
       };
-      case "FETCH_TOUCHED_QUESTIONS":
+    case "FETCH_TOUCHED_QUESTIONS":
+      return {
+        ...state,
+        touchedQuestion: action.payload,
+      };
+      case "FETCH_CORRECT_ANSWERS":
         return {
           ...state,
-          touchedQuestion: action.payload,
+          correctAnswers: action.payload,
         };
 
     default:
