@@ -1,0 +1,38 @@
+.card__container {
+  @apply flex justify-center items-center mt-14 md:mt-4  w-[100%];
+}
+
+form {
+  @apply mt-16 md:mt-20 mb-10;
+}
+
+form h1 {
+  @apply text-[1.375rem] md:text-[2rem] text-center text-primary-100 opacity-[65%] font-normal mb-4 font-main;
+}
+
+.sub--text {
+  @apply text-center text-secondary-100 font-body text-sm md:text-base;
+}
+
+.input--container {
+  @apply mt-16 flex flex-col justify-center font-main px-6 md:px-20;
+}
+.input {
+  @apply text-secondary-100 py-3 border-b mb-12 px-4  focus:outline-none;
+}
+
+.btn--text {
+  @apply text-end text-sm md:text-base text-primary-100 font-body;
+}
+
+.btn--main {
+  @apply my-8  w-full bg-primary-200 py-3 md:py-4  rounded-lg text-primary-100 hover:bg-primary-100 hover:text-white hover:transition;
+}
+
+.btn--text-2 {
+  @apply text-center text-xs md:text-base;
+}
+
+.btn--text-2 span {
+  @apply pr-2 text-xs md:text-base text-secondary-100;
+}
