@@ -1,14 +1,10 @@
 import { combineReducers } from "redux";
 import User from "./user";
-import Dashboard from "./dashboard";
-import Explore from "./explore";
-
+import examination from "./examination";
 
 const appReducer = combineReducers({
   user: User,
-  dashboard: Dashboard,
-  explore: Explore,
-
+  examination: examination,
 });
 
 const rootReducer = (state, action) => {

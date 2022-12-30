@@ -28,8 +28,9 @@ let store = createStore(
   )
 );
 let persistor = persistStore(store);
+ const root = ReactDOM.createRoot(document.getElementById("root"));
 
-ReactDOM.render(
+ root.render(
   <React.StrictMode>
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
@@ -37,6 +38,5 @@ ReactDOM.render(
         </PersistGate>
       </Provider>
   </React.StrictMode>,
-  document.getElementById("root")
 );
 

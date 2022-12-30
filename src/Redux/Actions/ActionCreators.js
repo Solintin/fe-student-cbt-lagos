@@ -65,64 +65,30 @@ const LoginAction = (loginParams, navigate, location, setLoading) => {
 
 
 
-const fetchDashboardFeeds = (data) => {
+const fetchQuestions = (data) => {
   return (dispatch) => {
-    dispatch({ type: "FETCH_DASHBOARD_FEED", payload: data });
+    dispatch({ type: "FETCH_QUESTIONS", payload: data });
   };
 };
-const fetchProffessionals = (data) => {
+const setCurrentQuestion = (data) => {
   return (dispatch) => {
-    dispatch({ type: "FETCH_PROFESSIONALS", payload: data });
+    dispatch({ type: "SET_CURRENT_QUESTION", payload: data });
   };
 };
-const fetchExplore = (data) => {
+const setTouchedQuestion = (data) => {
   return (dispatch) => {
-    dispatch({ type: "FETCH_EXPLORE", payload: data });
+    dispatch({ type: "FETCH_TOUCHED_QUESTIONS", payload: data });
   };
 };
 
-const fetchExploreAnimal = (data) => {
-  return (dispatch) => {
-    dispatch({ type: "FETCH_EXPLORE_ANIMALS", payload: data });
-  };
-};
-const fetchExploreLifestyle = (data) => {
-  return (dispatch) => {
-    dispatch({ type: "FETCH_EXPLORE_LIFESTYLE", payload: data });
-  };
-};
-const fetchExploreNature = (data) => {
-  return (dispatch) => {
-    dispatch({ type: "FETCH_EXPLORE_NATURE", payload: data });
-  };
-};
-const fetchExplorePeople = (data) => {
-  return (dispatch) => {
-    dispatch({ type: "FETCH_EXPLORE_PEOPLE", payload: data });
-  };
-};
-const fetchExploreCulture = (data) => {
-  return (dispatch) => {
-    dispatch({ type: "FETCH_EXPLORE_CULTURE", payload: data });
-  };
-};
-const SwitchExplorePop = (data) => {
-  return (dispatch) => {
-    dispatch({ type: "SWITCH", payload: data });
-  };
-};
+
+
 
 export {
   LoginAction,
   loginSuccess,
-  fetchDashboardFeeds,
-  fetchUser,
-  fetchExplore,
-  fetchExploreCulture,
-  fetchExplorePeople,
-  fetchExploreLifestyle,
-  fetchExploreNature,
-  fetchExploreAnimal,
-  fetchProffessionals,
-  SwitchExplorePop
-};
+  fetchQuestions,
+  setCurrentQuestion,
+  setTouchedQuestion
+}
+
