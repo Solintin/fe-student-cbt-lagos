@@ -10,7 +10,7 @@ import {
   setTouchedQuestion,
 } from "../../Redux/Actions/ActionCreators";
 function Exam() {
-  const [questions, setQuestion] = useState(Questions);
+//   const [questions, setQuestion] = useState(Questions);
   //   const [randomQuestions, setRandomQuestions] = useState([]);
   //   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   //   const [prevQuestion, setPrevQuestion] = useState(null);
