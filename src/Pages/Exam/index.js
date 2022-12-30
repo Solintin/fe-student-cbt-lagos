@@ -12,12 +12,13 @@ import {
 } from "../../Redux/Actions/ActionCreators";
 import { useTimer } from "../../Hooks/useTimer";
 function Exam() {
-  //   const [questions, setQuestion] = useState(Questions);
-  //   const [randomQuestions, setRandomQuestions] = useState([]);
-  //   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
 
-  const [minutes, seconds] = useTimer(180000);
-  //   console.log(minutes);
+
+  const [minutes, seconds, totalTime] = useTimer(1800000);
+
+//   if (totalTime < 1) {
+//     alert("Quiz has ended");
+//   }
 
   const [loading, setLoading] = useState(true);
 
@@ -177,7 +178,7 @@ function Exam() {
                   <p>Prev</p>
                 </button>
                 <button
-                  className={`py-2 px-4 rounded bg-info-600 text-white`}
+                  className={`${totalTime < 60 ? 'bg-info-600' :"bg-info-100" } py-2 px-4 rounded  text-white`}
                   title="next"
                 >
                   {minutes > 9 ? minutes : "0" + minutes} :{" "}
