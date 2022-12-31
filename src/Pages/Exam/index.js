@@ -83,11 +83,24 @@ function Exam() {
   };
 
   const handleTickedQuestion = (question, answer) => {
-    const isExist = tickedQuestions.find((item) => item.id === question.id);
+    const isExist = tickedQuestions.find((item) => item.qid === question.id);
     if (!isExist) {
+      //if question is not available, store it...
       dispatch(
         setTickedQuestions([
           ...tickedQuestions,
+          { qid: question.id, tickedAnswer: answer },
+        ])
+      );
+    } else {
+      //if not, update it
+      //remove the former and update with the latter
+      const updatedTickedQuestions = tickedQuestions.filter(
+        (item) => item.qid !== question.id
+      );
+      dispatch(
+        setTickedQuestions([
+          ...updatedTickedQuestions,
           { qid: question.id, tickedAnswer: answer },
         ])
       );
@@ -107,9 +120,16 @@ function Exam() {
     handleTouchedQuestion(question);
     handleNextQuestion();
     const isExist = correctAnswers.find((item) => item.id === question.id);
+    if (isExist) {
+        const updatedQuestionsAnsweredCorrectly = correctAnswers.filter(
+          (item) => item.id !== question.id
+        );
+        dispatch(setQuestionsAnsweredCorrectly(updatedQuestionsAnsweredCorrectly));
+      }
     if (answer === question.answer && !isExist) {
       dispatch(setQuestionsAnsweredCorrectly([...correctAnswers, question]));
     }
+   
     handleTickedQuestion(question, answer);
   };
 
