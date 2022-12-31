@@ -2,7 +2,9 @@ const initailState = {
   questionBank: [],
   currentQuestion: 0,
   touchedQuestion: [],
+  tickedQuestions: [],
   correctAnswers: [],
+  examTime: 1800000000
 };
 const examination = (state = initailState, action) => {
   switch (action.type) {
@@ -25,6 +27,16 @@ const examination = (state = initailState, action) => {
         return {
           ...state,
           correctAnswers: action.payload,
+        };
+      case "FETCH_TICKED_QUESTIONS":
+        return {
+          ...state,
+          tickedQuestions: action.payload,
+        };
+      case "SET_TIME":
+        return {
+          ...state,
+          examTime: action.payload,
         };
 
     default:

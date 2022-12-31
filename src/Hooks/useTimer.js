@@ -4,6 +4,7 @@ const useTimer = (duration) => {
   //   console.log(duration);
   //   const now = new Date();
 
+
   const [minutes, setMinutes] = useState(0);
   const [seconds, setSeconds] = useState(0);
   const [totalTime, setTotalTime] = useState(0);

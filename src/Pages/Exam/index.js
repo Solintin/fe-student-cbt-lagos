@@ -7,25 +7,28 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   fetchQuestions,
   setCurrentQuestion,
+  setExamTime,
   setQuestionsAnsweredCorrectly,
+  setTickedQuestions,
   setTouchedQuestion,
 } from "../../Redux/Actions/ActionCreators";
 import { useTimer } from "../../Hooks/useTimer";
 function Exam() {
-
-
-  const [minutes, seconds, totalTime] = useTimer(1800000);
-
-//   if (totalTime < 1) {
-//     alert("Quiz has ended");
-//   }
-
-  const [loading, setLoading] = useState(true);
-
   const dispatch = useDispatch();
+  const {
+    questionBank,
+    currentQuestion,
+    touchedQuestion,
+    correctAnswers,
+    tickedQuestions,
+    examTime,
+  } = useSelector((state) => state.examination);
+  const [minutes, seconds, totalTime] = useTimer(examTime);
 
-  const { questionBank, currentQuestion, touchedQuestion, correctAnswers } =
-    useSelector((state) => state.examination);
+  //   if (totalTime < 1) {
+  //     alert("Quiz has ended");
+  //   }
+
   const generateRandomQuestion = (data) => {
     let arrayContainer = [];
     let questionContainer = [];
@@ -42,8 +45,6 @@ function Exam() {
     }
     // setRandomQuestions(questionContainer);
     dispatch(fetchQuestions(questionContainer));
-
-    setLoading(false);
   };
 
   const updateCurrentQuestion = (index) => {
@@ -80,14 +81,36 @@ function Exam() {
   const pickQuestion = (questionId) => {
     updateCurrentQuestion(questionId);
   };
+
+  const handleTickedQuestion = (question, answer) => {
+    const isExist = tickedQuestions.find((item) => item.id === question.id);
+    if (!isExist) {
+      dispatch(
+        setTickedQuestions([
+          ...tickedQuestions,
+          { qid: question.id, tickedAnswer: answer },
+        ])
+      );
+    }
+  };
+  const isPickedAnswer = (question, answer) => {
+    let isAnswer = false;
+    tickedQuestions.forEach((q) => {
+      if (q.qid === question.id && q.tickedAnswer === answer) {
+        isAnswer = true;
+      }
+    });
+    return isAnswer;
+  };
   const handleAnswer = (question, answer) => {
+    dispatch(setExamTime(totalTime * 1000));
     handleTouchedQuestion(question);
     handleNextQuestion();
-
     const isExist = correctAnswers.find((item) => item.id === question.id);
     if (answer === question.answer && !isExist) {
       dispatch(setQuestionsAnsweredCorrectly([...correctAnswers, question]));
     }
+    handleTickedQuestion(question, answer);
   };
 
   useEffect(() => {
@@ -125,7 +148,12 @@ function Exam() {
                         questionBank[currentQuestion]?.optionA
                       );
                     }}
-                    className="p-4 border hover:border-green-500 rounded text-primary-100"
+                    className={`${
+                      isPickedAnswer(
+                        questionBank[currentQuestion],
+                        questionBank[currentQuestion]?.optionA
+                      ) && "choosedAnswer"
+                    } p-4 border-2 hover:border-green-500 rounded text-primary-100`}
                   >
                     A). {questionBank[currentQuestion]?.optionA}
                   </div>
@@ -136,7 +164,12 @@ function Exam() {
                         questionBank[currentQuestion]?.optionB
                       );
                     }}
-                    className="p-4 border hover:border-green-500 rounded text-primary-100"
+                    className={`${
+                      isPickedAnswer(
+                        questionBank[currentQuestion],
+                        questionBank[currentQuestion]?.optionB
+                      ) && "choosedAnswer"
+                    } p-4 border-2 hover:border-green-500 rounded text-primary-100`}
                   >
                     B). {questionBank[currentQuestion]?.optionB}
                   </div>
@@ -147,7 +180,12 @@ function Exam() {
                         questionBank[currentQuestion]?.optionC
                       );
                     }}
-                    className="p-4 border hover:border-green-500 rounded text-primary-100"
+                    className={`${
+                      isPickedAnswer(
+                        questionBank[currentQuestion],
+                        questionBank[currentQuestion]?.optionC
+                      ) && "choosedAnswer"
+                    } p-4 border-2 hover:border-green-500 rounded text-primary-100`}
                   >
                     C). {questionBank[currentQuestion]?.optionC}
                   </div>
@@ -158,7 +196,12 @@ function Exam() {
                         questionBank[currentQuestion]?.optionD
                       );
                     }}
-                    className="p-4 border hover:border-green-500 rounded text-primary-100"
+                    className={`${
+                      isPickedAnswer(
+                        questionBank[currentQuestion],
+                        questionBank[currentQuestion]?.optionD
+                      ) && "choosedAnswer"
+                    } p-4 border-2 hover:border-green-500 rounded text-primary-100`}
                   >
                     D). {questionBank[currentQuestion]?.optionD}
                   </div>
@@ -178,7 +221,9 @@ function Exam() {
                   <p>Prev</p>
                 </button>
                 <button
-                  className={`${totalTime < 60 ? 'bg-info-600' :"bg-info-100" } py-2 px-4 rounded  text-white`}
+                  className={`${
+                    totalTime < 60 ? "bg-info-600" : "bg-info-100"
+                  } py-2 px-4 rounded  text-white`}
                   title="next"
                 >
                   {minutes > 9 ? minutes : "0" + minutes} :{" "}

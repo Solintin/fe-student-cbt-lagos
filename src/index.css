@@ -7,6 +7,9 @@
 .poppins {
   font-family: "Poppins", sans-serif;
 }
+.choosedAnswer{
+    @apply border-green-500
+}
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

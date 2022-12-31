@@ -85,6 +85,16 @@ const setQuestionsAnsweredCorrectly = (data) => {
     dispatch({ type: "FETCH_CORRECT_ANSWERS", payload: data });
   };
 };
+const setTickedQuestions = (data) => {
+  return (dispatch) => {
+    dispatch({ type: "FETCH_TICKED_QUESTIONS", payload: data });
+  };
+};
+const setExamTime = (data) => {
+  return (dispatch) => {
+    dispatch({ type: "SET_TIME", payload: data });
+  };
+};
 
 
 
@@ -95,7 +105,9 @@ export {
   fetchQuestions,
   setCurrentQuestion,
   setTouchedQuestion,
-  setQuestionsAnsweredCorrectly
+  setQuestionsAnsweredCorrectly,
+  setTickedQuestions,
+  setExamTime
 
 }
 
