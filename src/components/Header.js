@@ -5,14 +5,14 @@ import abort from "../assets/Svg/abort.svg";
 
 function index() {
   return (
-      <div className="fixed bg-primary-100 inset-x-0 py-4 md:px-10">
+      <div className="fixed bg-primary-100 inset-x-0 py-4 md:px-10 px-5">
         <div
-          className="grid grid-cols-12 divide-x-2  divide-white"
+          className="grid grid-cols-12 md:divide-x-2  divide-white"
           title="Header"
         >
-          <div className="col-span-8 flex items-center  gap-4">
+          <div className="md:col-span-8 col-span-6 flex items-center  gap-4">
             <img src={logo} alt="" className="h-16 w-16 rounded" />
-            <div>
+            <div className="hidden md:block">
               <h1 className="text-white font-bold text-2xl">
                 Bluefield Secondary School
               </h1>
@@ -21,15 +21,15 @@ function index() {
               </h4>
             </div>
           </div>
-          <div className="col-span-4 pl-2 flex items-center  gap-4">
-            <img src={avatar} alt="" />
+          <div className="md:col-span-4 col-span-6  pl-2  flex items-center  gap-4">
+            <img src={avatar} alt="" className="h-12 w-12 hidden md:block" />
             <div>
-              <h1 className="text-white font-bold text-xl">
+              <h1 className="text-white font-bold md:text-xl text-sm">
                 Welcome, Adekunle
               </h1>
               <h4 className="text-white font-medium text-sm">#1234567890</h4>
             </div>
-            <button className="rounded-xl text-white font-semibold text-xs p-3 bg-info-600 flex items-center gap-4">
+            <button className="hidden rounded-xl text-white font-semibold text-xs p-3 bg-info-600 md:flex items-center gap-4">
               <img src={abort} alt="" className="w-5 h-5" />
               Abort test
             </button>

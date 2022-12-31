@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Header from "../../components/Header";
 import prev from "../../assets/Svg/prev.svg";
 import next from "../../assets/Svg/next.svg";
+import submitIcon from "../../assets/Svg/submit.svg";
 import Questions from "../../assets/QuestionBank.json";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -13,6 +14,7 @@ import {
   setTouchedQuestion,
 } from "../../Redux/Actions/ActionCreators";
 import { useTimer } from "../../Hooks/useTimer";
+import SubmitModal from "../../components/submitModal";
 function Exam() {
   const dispatch = useDispatch();
   const {
@@ -28,6 +30,8 @@ function Exam() {
   //   if (totalTime < 1) {
   //     alert("Quiz has ended");
   //   }
+
+  const [submit, setSubmit] = useState(false);
 
   const generateRandomQuestion = (data) => {
     let arrayContainer = [];
@@ -121,15 +125,17 @@ function Exam() {
     handleNextQuestion();
     const isExist = correctAnswers.find((item) => item.id === question.id);
     if (isExist) {
-        const updatedQuestionsAnsweredCorrectly = correctAnswers.filter(
-          (item) => item.id !== question.id
-        );
-        dispatch(setQuestionsAnsweredCorrectly(updatedQuestionsAnsweredCorrectly));
-      }
+      const updatedQuestionsAnsweredCorrectly = correctAnswers.filter(
+        (item) => item.id !== question.id
+      );
+      dispatch(
+        setQuestionsAnsweredCorrectly(updatedQuestionsAnsweredCorrectly)
+      );
+    }
     if (answer === question.answer && !isExist) {
       dispatch(setQuestionsAnsweredCorrectly([...correctAnswers, question]));
     }
-   
+
     handleTickedQuestion(question, answer);
   };
 
@@ -142,16 +148,24 @@ function Exam() {
   return (
     <div className="bg-[#F5F6FF] min-h-screen">
       <Header />
-      <div className="px-14 pt-28">
-        <div className="flex justify-center">
+      <div className="md:px-14 px-4 pt-28">
+        <div className="flex justify-between mb-4">
           <div className="bg-[#A098AE26] text-primary-100 font-medium py-4 px-6 text-sm rounded">
             <h1 title="exam-title">Physics</h1>
           </div>
+          <button
+          className={`${
+            totalTime < 60 ? "bg-info-600" : "bg-info-100"
+          } py-2 px-4 rounded  text-white md:hidden block`}
+        >
+          {minutes > 9 ? minutes : "0" + minutes} :
+          {seconds > 9 ? seconds : "0" + seconds}
+        </button>
         </div>
 
         {questionBank.length > 0 && (
-          <div className="grid grid-cols-12 gap-x-10">
-            <div className="col-span-8" title="Question">
+          <div className="grid md:grid-cols-12 md:gap-x-10">
+            <div className="md:col-span-8 col-span-12" title="Question">
               <div>
                 <h1 className="text-primary-100 mb-2">
                   Question {currentQuestion + 1}
@@ -243,10 +257,9 @@ function Exam() {
                 <button
                   className={`${
                     totalTime < 60 ? "bg-info-600" : "bg-info-100"
-                  } py-2 px-4 rounded  text-white`}
-                  title="next"
+                  } py-2 px-4 rounded  text-white md:block hidden`}
                 >
-                  {minutes > 9 ? minutes : "0" + minutes} :{" "}
+                  {minutes > 9 ? minutes : "0" + minutes} :
                   {seconds > 9 ? seconds : "0" + seconds}
                 </button>
                 <button
@@ -264,11 +277,11 @@ function Exam() {
                 </button>
               </div>
             </div>
-            <div className="col-span-4">
-              <h3 className="font-medium text-primary-100 mb-2">
+            <div className="md:col-span-4 col-span-12 w-full">
+              <h3 className="hidden md:block font-medium text-primary-100 mb-2">
                 Quick navigation
               </h3>
-              <div className="bg-white p-4  rounded flex  flex-wrap gap-4">
+              <div className="bg-white p-4  rounded hidden md:flex  flex-wrap gap-4">
                 {questionBank.map((question, id) => {
                   return (
                     <button
@@ -287,10 +300,26 @@ function Exam() {
                   );
                 })}
               </div>
+              <button
+                onClick={() => setSubmit(!submit)}
+                className={` py-2 px-4 rounded flex md:ml-auto mx-auto items-center gap-4 bg-green-500  text-white md:my-6 mb-6`}
+                title="submit"
+              >
+                <img src={submitIcon} className="h-4 w-4" alt="" />
+                <h3>Submit</h3>
+              </button>
             </div>
           </div>
         )}
       </div>
+
+      {submit && (
+        <SubmitModal
+          handleModal={() => {
+            setSubmit(!submit);
+          }}
+        />
+      )}
     </div>
   );
 }
