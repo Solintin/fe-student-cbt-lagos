@@ -29,10 +29,10 @@ function index() {
               </h1>
               <h4 className="text-white font-medium text-sm">#1234567890</h4>
             </div>
-            <button className="hidden rounded-xl text-white font-semibold text-xs p-3 bg-info-600 md:flex items-center gap-4">
+            {/* <button className="hidden rounded-xl text-white font-semibold text-xs p-3 bg-info-600 md:flex items-center gap-4">
               <img src={abort} alt="" className="w-5 h-5" />
               Abort test
-            </button>
+            </button> */}
           </div>
         </div>
         

@@ -1,6 +1,6 @@
 // Action Creators
 import * as type from "./Types";
-import axios from "../../Utils/axios";
+import axios from "../../Utils/useAxios";
 import toast from "react-hot-toast";
 
 const GetUsersSuccess = (data) => {
@@ -16,19 +16,29 @@ const loginSuccess = (data) => {
     payload: data,
   };
 };
+const logout = () => {
+  return {
+    type: type.LOGOUT,
+  };
+};
 
-const fetchUser = (id, token) => {
+const fetchUser = (token, navigate) => {
   return (dispatch) => {
     try {
       axios
-        .get(`/user_profile/${id}/`, {
+        .get("/user/profile/me", {
           headers: {
-            authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${token}`,
           },
         })
         .then((res) => {
-          console.log(res.data);
           dispatch(GetUsersSuccess(res.data));
+          if (res.data.role.toLowerCase() === "student") {
+            navigate("/dashboard");
+          } else {
+            toast.error("Please Login as a student");
+            navigate("/");
+          }
         });
     } catch (error) {
       console.log(error);
@@ -36,34 +46,23 @@ const fetchUser = (id, token) => {
   };
 };
 
-
-
-const LoginAction = (loginParams, navigate, location, setLoading) => {
-  console.log(location);
-  const redirectPath = location.state?.path || "/feed";
-
+const LoginAction = (loginParams, navigate, setLoading) => {
   return async (dispatch) => {
     setLoading(true);
     try {
-      await axios.post("/auth/login/user/", loginParams).then((res) => {
-        console.log(res.data);
-
+      await axios.post("/auth/login", loginParams).then((res) => {
         dispatch(loginSuccess(res.data));
-        dispatch(fetchUser(res.data.user_id, res.data.token));
+        dispatch(fetchUser(res.data, navigate));
         setLoading(false);
         toast.success("Login Successful");
-        navigate(redirectPath, { replace: true });
       });
     } catch (error) {
       setLoading(false);
-      // console.log(error.response);
-      const err = error.response.data.detail;
-      toast.error(err);
+      console.log(error.response.data);
+      toast.error(error.response.data);
     }
   };
 };
-
-
 
 const fetchQuestions = (data) => {
   return (dispatch) => {
@@ -96,9 +95,6 @@ const setExamTime = (data) => {
   };
 };
 
-
-
-
 export {
   LoginAction,
   loginSuccess,
@@ -107,7 +103,6 @@ export {
   setTouchedQuestion,
   setQuestionsAnsweredCorrectly,
   setTickedQuestions,
-  setExamTime
-
-}
-
+  setExamTime,
+  logout
+};

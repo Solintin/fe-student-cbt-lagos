@@ -293,7 +293,7 @@ function Exam() {
                         isQuestionTouched(question)
                           ? "bg-green-500 text-white"
                           : "text-primary-100"
-                      } bg-[#A098AE26] hover:bg-green-500 hover:text-white  w-8 text-center flex justify-center  px-2 border rounded`}
+                      }  hover:bg-green-500 hover:text-white  w-8 text-center flex justify-center  px-2 border rounded`}
                     >
                       {id + 1}
                     </button>
