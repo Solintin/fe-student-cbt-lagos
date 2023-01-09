@@ -50,7 +50,7 @@ const LoginAction = (loginParams, navigate, setLoading) => {
   return async (dispatch) => {
     setLoading(true);
     try {
-      await axios.post("/auth/login", loginParams).then((res) => {
+      await axios.post("/auth/student/login", loginParams).then((res) => {
         dispatch(loginSuccess(res.data));
         dispatch(fetchUser(res.data, navigate));
         setLoading(false);
@@ -104,5 +104,5 @@ export {
   setQuestionsAnsweredCorrectly,
   setTickedQuestions,
   setExamTime,
-  logout
+  logout,
 };

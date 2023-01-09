@@ -26,7 +26,7 @@ form h1 {
 }
 
 .btn--main {
-  @apply my-8  w-full bg-primary-200 py-3 md:py-4  rounded-lg text-primary-100 hover:bg-primary-100 hover:text-white hover:transition;
+  @apply my-8  w-full flex justify-center bg-primary-200 py-3 md:py-4  rounded-lg text-primary-100 hover:bg-primary-100 hover:text-white hover:transition;
 }
 
 .btn--text-2 {

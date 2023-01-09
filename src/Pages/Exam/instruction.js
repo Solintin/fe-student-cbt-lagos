@@ -1,10 +1,45 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { useSelector } from "react-redux";
 import Header from "../../components/Header";
 
 import arrow from "../../assets/Svg/arrow.svg";
 
 import { Link } from "react-router-dom";
+import toast from "react-hot-toast";
 function Instruction() {
+  // https://cbt-pqvc.onrender.com/api/assessment/start
+  const { token } = useSelector((state) => state.user);
+  const [loading, setLoading] = useState(false);
+
+  const fetchAssessments = (e) => {
+    setLoading(true);
+    axios
+      .post(
+        `https://cbt-pqvc.onrender.com/api/assessment/start`,
+        {
+          assessmentType: "Exam",
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+      .then((response) => {
+        console.log(response.data);
+
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.log(error.response);
+        toast.error(error.response.data.error.message)
+        setLoading(false);
+      });
+  };
+  useEffect(() => {
+    fetchAssessments();
+  }, []);
   return (
     <div className="inter bg-[#F5F6FF] min-h-screen">
       <Header />

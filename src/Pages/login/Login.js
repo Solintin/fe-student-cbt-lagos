@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom";
 
 import { LoginAction } from "../../Redux/Actions/ActionCreators";
 
-const isEmail = (value) => value.includes("@", ".com");
+const isNotEmpty = (value) => value.trim() !== "";
 const isPassword = (value) => value.length >= 6;
 
 const Login = () => {
@@ -21,12 +21,12 @@ const Login = () => {
   const [isError, setIsError] = useState("");
   const [loading, setLoading] = useState(false);
   const {
-    value: emailValue,
-    isValid: emailIsValid,
-    hasError: emailHasError,
-    valueChangeHandler: emailChangeHandler,
-    inputBlurHandler: emailBlurHandler,
-  } = useInput(isEmail);
+    value: admissionNoValue,
+    isValid: admissionNoIsValid,
+    hasError: admissionNoHasError,
+    valueChangeHandler: admissionNoChangeHandler,
+    inputBlurHandler: admissionNoBlurHandler,
+  } = useInput(isNotEmpty);
 
   const {
     value: passwordValue,
@@ -38,9 +38,9 @@ const Login = () => {
 
   const submitHandler = (event) => {
     event.preventDefault();
-    console.log(emailValue);
+    console.log(admissionNoValue);
     console.log(passwordValue);
-    if (emailIsValid && passwordIsValid) {
+    if (admissionNoIsValid && passwordIsValid) {
       formIsValid = true;
     }
 
@@ -49,7 +49,7 @@ const Login = () => {
       return;
     }
     const payload = {
-      email: emailValue,
+      admissionNo: admissionNoValue,
       password: passwordValue,
     };
     setLoading(true);
@@ -71,14 +71,14 @@ const Login = () => {
             <div className={classes["input--container"]}>
               <div className={classes["input__control"]}>
                 <input
-                  className={classes[emailHasError ? "invalid" : "input"]}
-                  type="email"
-                  placeholder="Email"
-                  value={emailValue}
-                  onChange={emailChangeHandler}
-                  onBlur={emailBlurHandler}
+                  className={classes[admissionNoHasError ? "invalid" : "input"]}
+                  type="text"
+                  placeholder="admissionNo"
+                  value={admissionNoValue}
+                  onChange={admissionNoChangeHandler}
+                  onBlur={admissionNoBlurHandler}
                 />
-                {emailHasError && (
+                {admissionNoHasError && (
                   <p className={classes["error-text"]}>
                     Please provide a valid email
                   </p>

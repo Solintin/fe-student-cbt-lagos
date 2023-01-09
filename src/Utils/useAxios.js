@@ -2,7 +2,7 @@ import axios from "axios";
 
 const FetchClient = () => {
   const defaultOptions = {
-    baseURL: process.env.REACT_APP_BACKEND_BASE_URL_PROD,
+    baseURL: 'https://cbt-pqvc.onrender.com/api',
   };
 
   // Create instance
