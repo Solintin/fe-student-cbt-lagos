@@ -1,7 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 
-function SubmitModal({ handleModal }) {
+function SubmitModal({ handleModal, handleSubmit, loading }) {
   const { questionBank, touchedQuestion } = useSelector(
     (state) => state.examination
   );
@@ -24,9 +24,16 @@ function SubmitModal({ handleModal }) {
         </div>
         <div className="flex justify-center gap-8 mb-6">
           <button
+            onClick={handleSubmit}
             className={`py-2 px-4 rounded flex bg-green-500 items-center gap-4 text-white`}
           >
-            <h3>Yes</h3>
+            {loading ? (
+              <div className="grid place-content-center py-2">
+                <div className="h-6 w-6 rounded-full border-4 border-t-[#fff] border-r-[#fff] border-b-primary-100 border-l-primary-100 animate-spin"></div>
+              </div>
+            ) : (
+              <h3>Yes</h3>
+            )}
           </button>
           <button
             onClick={handleModal}

@@ -32,8 +32,8 @@ const fetchUser = (token, navigate) => {
           },
         })
         .then((res) => {
-          dispatch(GetUsersSuccess(res.data));
-          if (res.data.role.toLowerCase() === "student") {
+          dispatch(GetUsersSuccess(res.data.data));
+          if (res.data.data.role.toLowerCase() === "student") {
             navigate("/dashboard");
           } else {
             toast.error("Please Login as a student");
@@ -51,8 +51,9 @@ const LoginAction = (loginParams, navigate, setLoading) => {
     setLoading(true);
     try {
       await axios.post("/auth/student/login", loginParams).then((res) => {
-        dispatch(loginSuccess(res.data));
-        dispatch(fetchUser(res.data, navigate));
+        const {accessToken} = res.data.data
+        dispatch(loginSuccess(accessToken));
+        dispatch(fetchUser(accessToken, navigate));
         setLoading(false);
         toast.success("Login Successful");
       });

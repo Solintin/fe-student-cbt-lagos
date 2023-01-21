@@ -1,78 +1,29 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import axios from "../../Utils/useAxios";
 import { useSelector } from "react-redux";
 import Header from "../../components/Header";
 
 import arrow from "../../assets/Svg/arrow.svg";
 
 import { Link } from "react-router-dom";
-import toast from "react-hot-toast";
 function Instruction() {
-  // https://cbt-pqvc.onrender.com/api/assessment/start
-  const { token } = useSelector((state) => state.user);
-  const [loading, setLoading] = useState(false);
+  const { assessment } = useSelector((state) => state.examination);
 
-  const fetchAssessments = (e) => {
-    setLoading(true);
-    axios
-      .post(
-        `https://cbt-pqvc.onrender.com/api/assessment/start`,
-        {
-          assessmentType: "Exam",
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      )
-      .then((response) => {
-        console.log(response.data);
 
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.log(error.response);
-        toast.error(error.response.data.error.message)
-        setLoading(false);
-      });
-  };
-  useEffect(() => {
-    fetchAssessments();
-  }, []);
   return (
     <div className="inter bg-[#F5F6FF] min-h-screen">
       <Header />
       <div className="md:px-14 px-4 pt-28">
         <div className="flex justify-center mb-4">
           <div className="bg-[#A098AE26] text-primary-100 font-medium py-4 px-6 text-sm rounded">
-            <h1 title="exam-title">Physics</h1>
+            <h1 title="exam-title">{assessment.title}</h1>
           </div>
         </div>
         <div className="mt-10 mx-auto max-w-3xl space-y-4">
           <h1 className="text-red-500">
             Carefully read through the test instructions below!!!
           </h1>
-          <p>
-            1. Aliquam et tristique convallis mi. Enim vel consequat sed arcu
-            nisl pellentesque. Tempor mattis id ultricies aliquam dignissim
-            potenti sodales pellentesque vel.
-          </p>
-          <p>
-            2. Aliquam et tristique convallis mi. Enim vel consequat sed arcu
-            nisl pellentesque. Tempor mattis id ultricies aliquam dignissim
-            potenti sodales pellentesque vel.
-          </p>
-          <p>
-            3. Aliquam et tristique convallis mi. Enim vel consequat sed arcu
-            nisl pellentesque. Tempor mattis id ultricies aliquam dignissim
-            potenti sodales pellentesque vel.
-          </p>
-          <p>
-            4. Aliquam et tristique convallis mi. Enim vel consequat sed arcu
-            nisl pellentesque. Tempor mattis id ultricies aliquam dignissim
-            potenti sodales pellentesque vel.
-          </p>
+         <p> {assessment.instruction} </p>
 
           <div>
             <Link

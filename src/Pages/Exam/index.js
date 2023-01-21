@@ -3,8 +3,9 @@ import Header from "../../components/Header";
 import prev from "../../assets/Svg/prev.svg";
 import next from "../../assets/Svg/next.svg";
 import submitIcon from "../../assets/Svg/submit.svg";
-import Questions from "../../assets/QuestionBank.json";
+import axios from "../../Utils/useAxios";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import {
   fetchQuestions,
   setCurrentQuestion,
@@ -15,6 +16,7 @@ import {
 } from "../../Redux/Actions/ActionCreators";
 import { useTimer } from "../../Hooks/useTimer";
 import SubmitModal from "../../components/submitModal";
+import toast from "react-hot-toast";
 function Exam() {
   const dispatch = useDispatch();
   const {
@@ -24,12 +26,15 @@ function Exam() {
     correctAnswers,
     tickedQuestions,
     examTime,
+    assessment,
   } = useSelector((state) => state.examination);
   const [minutes, seconds, totalTime] = useTimer(examTime);
 
   //   if (totalTime < 1) {
   //     alert("Quiz has ended");
   //   }
+
+  const naviagte = useNavigate();
 
   const [submit, setSubmit] = useState(false);
 
@@ -67,7 +72,7 @@ function Exam() {
   };
 
   const isQuestionTouched = (question) => {
-    return touchedQuestion.find((item) => item.id === question.id);
+    return touchedQuestion.find((item) => item._id === question._id);
   };
   const handleTouchedQuestion = (question) => {
     const touchedQuestionCopy = touchedQuestion;
@@ -87,25 +92,25 @@ function Exam() {
   };
 
   const handleTickedQuestion = (question, answer) => {
-    const isExist = tickedQuestions.find((item) => item.qid === question.id);
+    const isExist = tickedQuestions.find((item) => item.qid === question._id);
     if (!isExist) {
       //if question is not available, store it...
       dispatch(
         setTickedQuestions([
           ...tickedQuestions,
-          { qid: question.id, tickedAnswer: answer },
+          { qid: question._id, tickedAnswer: answer },
         ])
       );
     } else {
       //if not, update it
       //remove the former and update with the latter
       const updatedTickedQuestions = tickedQuestions.filter(
-        (item) => item.qid !== question.id
+        (item) => item.qid !== question._id
       );
       dispatch(
         setTickedQuestions([
           ...updatedTickedQuestions,
-          { qid: question.id, tickedAnswer: answer },
+          { qid: question._id, tickedAnswer: answer },
         ])
       );
     }
@@ -113,7 +118,7 @@ function Exam() {
   const isPickedAnswer = (question, answer) => {
     let isAnswer = false;
     tickedQuestions.forEach((q) => {
-      if (q.qid === question.id && q.tickedAnswer === answer) {
+      if (q.qid === question._id && q.tickedAnswer === answer) {
         isAnswer = true;
       }
     });
@@ -123,44 +128,78 @@ function Exam() {
     dispatch(setExamTime(totalTime * 1000));
     handleTouchedQuestion(question);
     handleNextQuestion();
-    const isExist = correctAnswers.find((item) => item.id === question.id);
+    const isExist = correctAnswers.find((item) => item._id === question._id);
     if (isExist) {
       const updatedQuestionsAnsweredCorrectly = correctAnswers.filter(
-        (item) => item.id !== question.id
+        (item) => item._id !== question._id
       );
       dispatch(
         setQuestionsAnsweredCorrectly(updatedQuestionsAnsweredCorrectly)
       );
     }
-    if (answer === question.answer && !isExist) {
+    if (answer === question.correctAns && !isExist) {
       dispatch(setQuestionsAnsweredCorrectly([...correctAnswers, question]));
     }
 
     handleTickedQuestion(question, answer);
   };
 
+  const { token } = useSelector((state) => state.user);
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = (e) => {
+    setLoading(true);
+    axios
+      .post(
+        `/assessment/complete`,
+        {
+          assessmentId: assessment._id,
+          totalQuestions: questionBank.length,
+          totalAttempted: touchedQuestion.length,
+          totalCorrectAnswer: correctAnswers.length,
+          totalWrongAnswer: questionBank.length - correctAnswers.length,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+      .then((response) => {
+        console.log(response.data);
+        toast.success("Assessment successfully submitted");
+        dispatch({ type: "LOGOUT" });
+        naviagte("/")
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.log(error.response);
+        toast.error(error.response.data.error.message);
+        setLoading(false);
+      });
+  };
   useEffect(() => {
+    generateRandomQuestion(questionBank);
     if (questionBank.length === 0) {
-      generateRandomQuestion(Questions);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <div className="bg-[#F5F6FF] min-h-screen">
       <Header />
-      <div className="md:px-14 px-4 pt-28">
-        <div className="flex justify-between mb-4">
+      <div className="md:px-14 px-4 pt-28 ">
+        <div className="flex justify-between mb-4 md:pr-4 md:w-8/12">
           <div className="bg-[#A098AE26] text-primary-100 font-medium py-4 px-6 text-sm rounded">
-            <h1 title="exam-title">Physics</h1>
+            <h1 title="exam-title"> {assessment.title} </h1>
           </div>
           <button
-          className={`${
-            totalTime < 60 ? "bg-info-600" : "bg-info-100"
-          } py-2 px-4 rounded  text-white md:hidden block`}
-        >
-          {minutes > 9 ? minutes : "0" + minutes} :
-          {seconds > 9 ? seconds : "0" + seconds}
-        </button>
+            className={`${
+              totalTime < 300 ? "bg-info-600" : "bg-info-100"
+            } py-2 px-4 rounded  text-white`}
+          >
+            {minutes > 9 ? minutes : "0" + minutes} :
+            {seconds > 9 ? seconds : "0" + seconds}
+          </button>
         </div>
 
         {questionBank.length > 0 && (
@@ -173,71 +212,78 @@ function Exam() {
 
                 <div className="mt-2 p-4 rounded bg-white text-primary-100 ">
                   <p>{questionBank[currentQuestion]?.question}</p>
+                  {questionBank[currentQuestion]?.image && (
+                    <img
+                      src={questionBank[currentQuestion]?.image.url}
+                      alt="question_image"
+                      className="my-4 h-36 w-full object-contain"
+                    />
+                  )}
                 </div>
                 <div className="mt-4 bg-white p-4 rounded flex flex-col gap-4">
                   <div
                     onClick={() => {
                       handleAnswer(
                         questionBank[currentQuestion],
-                        questionBank[currentQuestion]?.optionA
+                        questionBank[currentQuestion]?.options.a
                       );
                     }}
                     className={`${
                       isPickedAnswer(
                         questionBank[currentQuestion],
-                        questionBank[currentQuestion]?.optionA
+                        questionBank[currentQuestion]?.options.a
                       ) && "choosedAnswer"
                     } p-4 border-2 hover:border-green-500 rounded text-primary-100`}
                   >
-                    A). {questionBank[currentQuestion]?.optionA}
+                    A). {questionBank[currentQuestion]?.options.a}
                   </div>
                   <div
                     onClick={() => {
                       handleAnswer(
                         questionBank[currentQuestion],
-                        questionBank[currentQuestion]?.optionB
+                        questionBank[currentQuestion]?.options.b
                       );
                     }}
                     className={`${
                       isPickedAnswer(
                         questionBank[currentQuestion],
-                        questionBank[currentQuestion]?.optionB
+                        questionBank[currentQuestion]?.options.b
                       ) && "choosedAnswer"
                     } p-4 border-2 hover:border-green-500 rounded text-primary-100`}
                   >
-                    B). {questionBank[currentQuestion]?.optionB}
+                    B). {questionBank[currentQuestion]?.options.b}
                   </div>
                   <div
                     onClick={() => {
                       handleAnswer(
                         questionBank[currentQuestion],
-                        questionBank[currentQuestion]?.optionC
+                        questionBank[currentQuestion]?.options.c
                       );
                     }}
                     className={`${
                       isPickedAnswer(
                         questionBank[currentQuestion],
-                        questionBank[currentQuestion]?.optionC
+                        questionBank[currentQuestion]?.options.c
                       ) && "choosedAnswer"
                     } p-4 border-2 hover:border-green-500 rounded text-primary-100`}
                   >
-                    C). {questionBank[currentQuestion]?.optionC}
+                    C). {questionBank[currentQuestion]?.options.c}
                   </div>
                   <div
                     onClick={() => {
                       handleAnswer(
                         questionBank[currentQuestion],
-                        questionBank[currentQuestion]?.optionD
+                        questionBank[currentQuestion]?.options.d
                       );
                     }}
                     className={`${
                       isPickedAnswer(
                         questionBank[currentQuestion],
-                        questionBank[currentQuestion]?.optionD
+                        questionBank[currentQuestion]?.options.d
                       ) && "choosedAnswer"
                     } p-4 border-2 hover:border-green-500 rounded text-primary-100`}
                   >
-                    D). {questionBank[currentQuestion]?.optionD}
+                    D). {questionBank[currentQuestion]?.options.d}
                   </div>
                 </div>
               </div>
@@ -254,14 +300,7 @@ function Exam() {
                   <img src={prev} className="h-4 w-4" alt="" />
                   <p>Prev</p>
                 </button>
-                <button
-                  className={`${
-                    totalTime < 60 ? "bg-info-600" : "bg-info-100"
-                  } py-2 px-4 rounded  text-white md:block hidden`}
-                >
-                  {minutes > 9 ? minutes : "0" + minutes} :
-                  {seconds > 9 ? seconds : "0" + seconds}
-                </button>
+
                 <button
                   disabled={currentQuestion === questionBank.length - 1}
                   onClick={handleNextQuestion}
@@ -318,6 +357,8 @@ function Exam() {
           handleModal={() => {
             setSubmit(!submit);
           }}
+          handleSubmit={handleSubmit}
+          loading={loading}
         />
       )}
     </div>

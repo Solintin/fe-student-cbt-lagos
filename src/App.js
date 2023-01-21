@@ -4,6 +4,7 @@ import Exam from "./Pages/Exam/";
 import Instruction from "./Pages/Exam/instruction";
 import Dashboard from "./Pages/dashboard";
 import { Toaster } from "react-hot-toast";
+import Result from "./Pages/result";
 
 const App = () => {
   return (
@@ -35,6 +36,7 @@ const App = () => {
           <Route exact path="/" element={<Login />} />
           <Route path="/exam" element={<Exam />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/results" element={<Result />} />
           <Route path="/instruction" element={<Instruction />} />
         </Routes>
       </Router>

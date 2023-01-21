@@ -4,7 +4,8 @@ const initailState = {
   touchedQuestion: [],
   tickedQuestions: [],
   correctAnswers: [],
-  examTime: 1800000000
+  examTime: 0,
+  assessment: null
 };
 const examination = (state = initailState, action) => {
   switch (action.type) {
@@ -37,6 +38,11 @@ const examination = (state = initailState, action) => {
         return {
           ...state,
           examTime: action.payload,
+        };
+      case "SET_ASSESSMENT":
+        return {
+          ...state,
+          assessment: action.payload,
         };
 
     default:

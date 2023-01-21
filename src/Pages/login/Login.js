@@ -80,7 +80,7 @@ const Login = () => {
                 />
                 {admissionNoHasError && (
                   <p className={classes["error-text"]}>
-                    Please provide a valid email
+                    Please provide a valid Admission number
                   </p>
                 )}
               </div>
