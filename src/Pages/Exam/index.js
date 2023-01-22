@@ -153,9 +153,7 @@ function Exam() {
       .post(
         `/assessment/complete`,
         {
-          assessmentId: assessment._id,
-          totalQuestions: questionBank.length,
-          totalAttempted: touchedQuestion.length,
+          assessmentId: assessment._id,          totalAttempted: touchedQuestion.length,
           totalCorrectAnswer: correctAnswers.length,
           totalWrongAnswer: questionBank.length - correctAnswers.length,
         },

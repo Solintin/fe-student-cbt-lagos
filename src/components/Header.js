@@ -1,7 +1,7 @@
 import React from "react";
 import logo from "../assets/img/school-logo.jpg";
 import avatar from "../assets/Svg/avatar.svg";
-import abort from "../assets/Svg/abort.svg";
+// import abort from "../assets/Svg/abort.svg";
 import { useSelector } from "react-redux";
 
 function Index() {
@@ -25,7 +25,15 @@ function Index() {
           </div>
         </div>
         <div className="md:col-span-4 col-span-6  pl-2  flex items-center  gap-4">
-          <img src={avatar} alt="" className="h-12 w-12 hidden md:block" />
+          {currentUser?.profileImage ? (
+            <img
+              src={currentUser?.profileImage.url}
+              alt=""
+              className="w-[5.25rem] h-[5.25rem]  rounded-full object-cover"
+            />
+          ) : (
+            <img src={avatar} alt="" className="h-12 w-12 hidden md:block" />
+          )}
           <div>
             <h1 className="text-white font-bold md:text-xl text-sm truncate">
               Welcome, {currentUser.fullName}
