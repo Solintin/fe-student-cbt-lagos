@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, {  useState } from "react";
 import Header from "../components/Header";
 import exam from "../assets/Svg/exam.svg";
 import arrowright from "../assets/Svg/arrowright.svg";

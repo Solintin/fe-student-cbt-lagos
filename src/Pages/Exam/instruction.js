@@ -1,5 +1,3 @@
-import React, { useEffect, useState } from "react";
-import axios from "../../Utils/useAxios";
 import { useSelector } from "react-redux";
 import Header from "../../components/Header";
 

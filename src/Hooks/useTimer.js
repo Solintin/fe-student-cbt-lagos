@@ -4,7 +4,6 @@ const useTimer = (duration) => {
   //   console.log(duration);
   //   const now = new Date();
 
-
   const [minutes, setMinutes] = useState(0);
   const [seconds, setSeconds] = useState(0);
   const [totalTime, setTotalTime] = useState(0);
@@ -22,9 +21,10 @@ const useTimer = (duration) => {
   useEffect(() => {
     const interval = setInterval(() => getTime(deadline), 1000);
     return () => clearInterval(interval);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return [minutes, seconds,  totalTime/1000];
+  return [minutes, seconds, totalTime / 1000];
 };
 
 export { useTimer };

@@ -5,7 +5,7 @@ import close from "../assets/Svg/close.svg";
 import { useNavigate } from "react-router-dom";
 import axios from "../Utils/useAxios";
 import { useSelector } from "react-redux";
-import toast from "react-hot-toast";
+// import toast from "react-hot-toast";
 
 function Dashboard() {
   const { token } = useSelector((state) => state.user);
