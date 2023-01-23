@@ -59,8 +59,8 @@ const LoginAction = (loginParams, navigate, setLoading) => {
       });
     } catch (error) {
       setLoading(false);
-      console.log(error.response.data);
-      toast.error(error.response.data);
+      console.log(error.response.data.error.message);
+      toast.error(error.response.data.error.message);
     }
   };
 };

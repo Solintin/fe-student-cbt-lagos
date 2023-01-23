@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "Utils/useAxios";
 import classes from "./Login.module.css";
 import Section from "UI/Section";
@@ -10,7 +10,7 @@ import toast from "react-hot-toast";
 const SignUp = () => {
   const [fullName, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [password] = useState("12345678");
+  const [password, setPassword] = useState("12345678");
   const [gender, setGender] = useState("Male");
   const [birthDate, setDob] = useState("");
   const [admissionNo, setAdmissionNo] = useState("");
@@ -20,13 +20,26 @@ const SignUp = () => {
   const [guardianPhone, setGuardianPhone] = useState("");
   const [guardianAddress, setGuardianAddress] = useState("");
   const [guardianRelationship, setGuardianRelationship] = useState("");
-  const [, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [profileImage, setprofileImage] = useState(null);
-  const [classId] = useState(null);
-  const [classTitle] = useState(null);
+  const [classId, setClassId] = useState(null);
+  const [getClasses, setClasses] = useState([]);
   const navigate = useNavigate();
   const handleImage = (event) => {
     setprofileImage(event.target.files[0]);
+  };
+
+  const fetchClasses = (e) => {
+    setLoading(true);
+    axios
+      .get("/class/without-token")
+      .then((response) => {
+        setClasses(response.data.data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        setLoading(false);
+      });
   };
 
   const handleSubmit = (e) => {
@@ -55,7 +68,7 @@ const SignUp = () => {
         console.log(res);
         toast.success("Registration successful");
         setLoading(false);
-        navigate("/l");
+        navigate("/");
       })
       .catch((err) => {
         toast.error(err.response.data.error.message);
@@ -63,6 +76,10 @@ const SignUp = () => {
         setLoading(false);
       });
   };
+
+  useEffect(() => {
+    fetchClasses();
+  }, []);
   return (
     <Section>
       <NavAuth />
@@ -75,7 +92,9 @@ const SignUp = () => {
             }}
             className="py-4 m-0 overflow-y-auto h-auto"
           >
-            <div className="text-primary-100 text-xl text-center mt-10">Student Registration</div>
+            <div className="text-primary-100 text-xl text-center mt-10">
+              Student Registration
+            </div>
 
             <div className="mt-8">
               <div className="mb-4">
@@ -93,24 +112,46 @@ const SignUp = () => {
                   className="mt-2 text-sm text-black w-full outline-none border-b p-4"
                 />
               </div>
-
               <div className="mb-4">
-                <label htmlFor="title" className="text-gray-500 text-sm block">
-                  Class Title<span className="text-info-600">*</span>
+                <label htmlFor="name" className="text-gray-500 text-sm block">
+                  Password<span className="text-info-600">*</span>
                 </label>
                 <input
-                  id="title"
-                  type="text"
+                  id="name"
+                  type="password"
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                  }}
                   required
-                  value={classTitle}
-                  placeholder="E.g. Class VII"
+                  placeholder="***************"
                   className="mt-2 text-sm text-black w-full outline-none border-b p-4"
                 />
               </div>
+
+              <select
+              name=""
+              className="mt-6 text-sm text-black w-full outline-none border-b p-4"
+              id=""
+              onChange={(e) => {
+                setClassId(e.target.value);
+              }}
+            >
+              <option value=""> -- Select Class -- </option>
+              {getClasses.length > 0 &&
+                getClasses.map((item, idx) => {
+                  return (
+                    <option key={idx} value={item._id}>
+                      {item.title}
+                    </option>
+                  );
+                })}
+            </select>
+            
               <div className="">
                 <input
                   className="mt-2 text-sm text-black w-full outline-none border-b p-4"
                   type="file"
+                  accept="image/*"
                   placeholder="Upload photo"
                   onChange={(e) => {
                     handleImage(e);
@@ -118,7 +159,7 @@ const SignUp = () => {
                 />
 
                 {!profileImage && (
-                  <p className="text-red-400">Please Upload your Image</p>
+                  <p className="text-red-400 mb-3">Please Upload your Image</p>
                 )}
               </div>
 
@@ -298,14 +339,20 @@ const SignUp = () => {
               </div>
 
               <div className="mt-10 flex justify-center items-center">
-              {/* <button className="bg-primary-100 text-white rounded-xl text-sm font-semibold px-8 py-4">
+                <button className="bg-primary-100 text-white rounded-xl text-sm font-semibold px-8 py-4">
                 {!loading ? (
                   <p>Register</p>
                 ) : (
                   <div className="h-6 w-6 rounded-full border-4 border-t-[#fff] border-r-[#fff] border-b-primary-100 border-l-primary-100 animate-spin"></div>
                 )}{" "}
-              </button> */}
+              </button> 
               </div>
+              <div className={classes["btn--text-2"]}>
+              <span>Already have an account?</span>
+              <Link to="/" className={classes["btn--text"]}>
+                Login
+              </Link>
+            </div>
             </div>
           </form>
         </CardAuth>
