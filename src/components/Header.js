@@ -35,7 +35,7 @@ function Index() {
             <img
               src={currentUser?.profileImage.url}
               alt=""
-              className="w-[5.25rem] h-[5.25rem]  rounded-full object-cover"
+              className="md:w-[5.25rem] w-12 h-12 md:h-[5.25rem]  rounded-full object-cover"
             />
           ) : (
             <img src={avatar} alt="" className="h-12 w-12 hidden md:block" />
