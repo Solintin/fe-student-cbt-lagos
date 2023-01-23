@@ -30,9 +30,7 @@ function Exam() {
   } = useSelector((state) => state.examination);
   const [minutes, seconds, totalTime] = useTimer(examTime);
 
-  //   if (totalTime < 1) {
-  //     alert("Quiz has ended");
-  //   }
+   
 
   const naviagte = useNavigate();
 
@@ -182,6 +180,12 @@ function Exam() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+  if (totalTime < 2) {
+    handleSubmit()
+  }
+  if (totalTime === 120000) {
+    toast("This assessment will be submitted automatically shortly")
+  }
   return (
     <div className="bg-[#F5F6FF] min-h-screen">
       <Header />
