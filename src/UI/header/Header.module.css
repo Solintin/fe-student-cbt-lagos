@@ -1,0 +1,55 @@
+.container {
+  @apply flex justify-between items-center w-[100%] pt-4 md:pt-9;
+}
+
+.main {
+  @apply md:flex justify-between items-center w-full  md:w-[68%];
+}
+
+.text--main {
+  @apply text-3xl md:text-[2rem] font-main text-primary-100 font-semibold md:font-bold mb-6 md:mb-0;
+}
+
+.svg--container {
+  @apply w-full md:w-[17.4rem]  border-b  border-secondary-100  flex justify-center items-start text-secondary-100;
+}
+
+.svg--search {
+  @apply h-4 w-4 mr-3 mb-3;
+}
+
+.input {
+  @apply  bg-transparent w-full  text-xs  outline-none font-main;
+}
+
+.sub {
+  @apply hidden  md:flex justify-end items-center;
+}
+
+.notification {
+  @apply w-8 h-8 text-primary-100;
+}
+
+.profile--container {
+  @apply flex justify-center items-center ml-11;
+}
+
+.profile--container--1 {
+  @apply text-right;
+}
+
+.account--name {
+  @apply font-semibold text-sm  text-primary-100;
+}
+
+.status {
+  @apply text-secondary-100 text-sm font-normal;
+}
+
+.svg--avatar--container {
+  @apply ml-4;
+}
+
+.avatar {
+  @apply w-14 h-14  text-primary-100;
+}

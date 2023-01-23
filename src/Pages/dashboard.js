@@ -80,7 +80,7 @@ function Dashboard() {
               </p>
               {loading && (
                 <div className="grid place-content-center py-2">
-                  <div className="h-6 w-6 rounded-full border-4 border-t-[#fff] border-r-[#fff] border-b-primary-100 border-l-primary-100 animate-spin"></div>
+                <div className="h-6 w-6 rounded-full border-4 border-t-[#fff] border-r-[#fff] border-b-primary-100 border-l-primary-100 animate-spin"></div>
                 </div>
               )}
             </div>

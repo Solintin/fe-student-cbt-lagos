@@ -17,7 +17,7 @@ function Index() {
           <img src={logo} alt="" className="h-16 w-16 rounded" />
           <div className="hidden md:block">
             <h1 className="text-white font-bold text-2xl">
-              Bluefield Secondary School
+              OKUN-AJAH COMMUNITY SENIOR SEC SCHOOL
             </h1>
             <h4 className="text-white  mt-2 text-base">
               Computer Based Test (CBT) Platform
