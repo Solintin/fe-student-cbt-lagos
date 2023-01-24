@@ -63,7 +63,7 @@ const Login = () => {
       <div className={classes["card__container"]}>
         <CardAuth>
           <form onSubmit={submitHandler}>
-            <h1>Login</h1>
+            <h1>Login Student</h1>
             <div className={classes["sub--text"]}>
               Please enter your credentials below.
             </div>

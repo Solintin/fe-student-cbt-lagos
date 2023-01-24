@@ -30,8 +30,6 @@ function Exam() {
   } = useSelector((state) => state.examination);
   const [minutes, seconds, totalTime] = useTimer(examTime);
 
-   
-
   const naviagte = useNavigate();
 
   const [submit, setSubmit] = useState(false);
@@ -151,7 +149,8 @@ function Exam() {
       .post(
         `/assessment/complete`,
         {
-          assessmentId: assessment._id,          totalAttempted: touchedQuestion.length,
+          assessmentId: assessment._id,
+          totalAttempted: touchedQuestion.length,
           totalCorrectAnswer: correctAnswers.length,
           totalWrongAnswer: questionBank.length - correctAnswers.length,
         },
@@ -165,7 +164,7 @@ function Exam() {
         console.log(response.data);
         toast.success("Assessment successfully submitted");
         dispatch({ type: "LOGOUT" });
-        naviagte("/")
+        naviagte("/");
         setLoading(false);
       })
       .catch((error) => {
@@ -174,18 +173,26 @@ function Exam() {
         setLoading(false);
       });
   };
+  // if (totalTime < 2) {
+  //   handleSubmit()
+  // }
+  if (totalTime === 540000) {
+    toast("This assessment will be submitted automatically shortly");
+  }
   useEffect(() => {
-    generateRandomQuestion(questionBank);
     if (questionBank.length === 0) {
+      generateRandomQuestion(questionBank);
+    }
+    console.log(totalTime);
+    if (totalTime <= 60 && totalTime >= 59) {
+      toast.error("This assessment will be submitted automatically shortly");
+    }
+    if (totalTime <= 4 && totalTime >= 3) {
+        handleSubmit()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-  if (totalTime < 2) {
-    handleSubmit()
-  }
-  if (totalTime === 120000) {
-    toast("This assessment will be submitted automatically shortly")
-  }
+  }, [totalTime]);
+
   return (
     <div className="bg-[#F5F6FF] min-h-screen">
       <Header />
