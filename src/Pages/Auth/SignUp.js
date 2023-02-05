@@ -16,10 +16,7 @@ const SignUp = () => {
   const [admissionNo, setAdmissionNo] = useState("");
   const [religion, setReligion] = useState("Islam");
   const [homeAddress, setHomeAddress] = useState("");
-  const [guardianName, setGuardianName] = useState("");
-  const [guardianPhone, setGuardianPhone] = useState("");
-  const [guardianAddress, setGuardianAddress] = useState("");
-  const [guardianRelationship, setGuardianRelationship] = useState("");
+
   const [loading, setLoading] = useState(false);
   const [profileImage, setprofileImage] = useState(null);
   const [classId, setClassId] = useState(null);
@@ -55,10 +52,7 @@ const SignUp = () => {
     formData.append("religion", religion);
     formData.append("classId", classId);
     formData.append("homeAddress", homeAddress);
-    formData.append("guardianName", guardianName);
-    formData.append("guardianPhone", guardianPhone);
-    formData.append("guardianAddress", guardianAddress);
-    formData.append("guardianRelationship", guardianRelationship);
+
     formData.append("role", "Student");
     formData.append("profileImage", profileImage);
     setLoading(true);
@@ -264,76 +258,6 @@ const SignUp = () => {
                   }}
                   required
                   placeholder="E.g. No 1 Lagost street."
-                  className="mt-2 text-sm text-black w-full outline-none border-b p-4"
-                />
-              </div>
-
-              <h1>Guardians</h1>
-
-              <div className="mb-4">
-                <label htmlFor="name" className="text-gray-500 text-sm block">
-                  Name<span className="text-info-600">*</span>
-                </label>
-                <input
-                  id="Email"
-                  type="text"
-                  onChange={(e) => {
-                    setGuardianName(e.target.value);
-                  }}
-                  required
-                  placeholder="E.g. Adekunle Peters"
-                  className="mt-2 text-sm text-black w-full outline-none border-b p-4"
-                />
-              </div>
-              <div className="mb-4">
-                <label htmlFor="phone" className="text-gray-500 text-sm block">
-                  Phone<span className="text-info-600">*</span>
-                </label>
-                <input
-                  id="phone"
-                  type="text"
-                  onChange={(e) => {
-                    setGuardianPhone(e.target.value);
-                  }}
-                  required
-                  placeholder="E.g. 09012345678"
-                  className="mt-2 text-sm text-black w-full outline-none border-b p-4"
-                />
-              </div>
-              <div className="mb-4">
-                <label
-                  htmlFor="address"
-                  className="text-gray-500 text-sm block"
-                >
-                  Address<span className="text-info-600">*</span>
-                </label>
-                <input
-                  id="address"
-                  type="text"
-                  onChange={(e) => {
-                    setGuardianAddress(e.target.value);
-                  }}
-                  required
-                  placeholder="E.g. No 1 Lagost street."
-                  className="mt-2 text-sm text-black w-full outline-none border-b p-4"
-                />
-              </div>
-
-              <div className="mb-4">
-                <label
-                  htmlFor="relationship"
-                  className="text-gray-500 text-sm block"
-                >
-                  Relationship <span className="text-info-600">*</span>
-                </label>
-                <input
-                  id="relationship"
-                  type="text"
-                  onChange={(e) => {
-                    setGuardianRelationship(e.target.value);
-                  }}
-                  required
-                  placeholder="E.g. brother."
                   className="mt-2 text-sm text-black w-full outline-none border-b p-4"
                 />
               </div>
