@@ -11,7 +11,7 @@ import { useNavigate } from "react-router-dom";
 import { LoginAction } from "../../Redux/Actions/ActionCreators";
 
 const isNotEmpty = (value) => value.trim() !== "";
-const isPassword = (value) => value.length >= 6;
+const isPassword = (value) => value.length >= 4;
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -96,7 +96,7 @@ const Login = () => {
                 />
                 {passwordHasError && (
                   <p className={classes["error-text"]}>
-                    Password must be at least 8 characters long
+                    Password must be at least 4 characters long
                   </p>
                 )}
               </div>
