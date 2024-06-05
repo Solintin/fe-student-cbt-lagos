@@ -2,7 +2,7 @@ import axios from "axios";
 
 const FetchClient = () => {
   const defaultOptions = {
-    baseURL: 'https://cbt-v2-bcpi.onrender.com/api',
+    baseURL: 'https://oacss-cbt-be.onrender.com/api',
   };
 
   // Create instance
